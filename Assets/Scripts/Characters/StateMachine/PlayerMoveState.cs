@@ -27,6 +27,12 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
+        if (ctx.IsJumpPressed && ctx.IsGrounded)
+        {
+            ctx.UseJumpInput();
+            SwitchState(factory.Jump());
+        }
+        
         //Se parou de mexer o analógico, volta para IDLE;
         if (ctx.CurrentMovementInput.magnitude < 0.1f)
         {

@@ -22,6 +22,11 @@ public class PlayerStateFactory
     {
         return new PlayerMoveState(_context, this);
     }
+
+    public PlayerBaseState Jump()
+    {
+        return new PlayerJumpState(_context, this);
+    }
     
     
 }

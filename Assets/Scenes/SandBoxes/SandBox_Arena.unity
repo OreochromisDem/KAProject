@@ -619,6 +619,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 4e307b3e-0c2c-4fe8-af10-a5907ad86e37
     m_ActionName: 'Gameplay/Attack_Light[/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f72b7937-7ce6-4f43-b00d-5d85cc7bdbe5
+    m_ActionName: 'Gameplay/Jump[/Keyboard/shift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -717,7 +721,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1946487002}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1223765035
@@ -737,9 +742,16 @@ MonoBehaviour:
   <MoveSpeed>k__BackingField: 6
   <RotationSpeed>k__BackingField: 10
   <GravityValue>k__BackingField: -9.81
+  <JumpForce>k__BackingField: 15
+  <JumpBufferTime>k__BackingField: 0.2
   PlayerVelocity: {x: 0, y: 0, z: 0}
   IsGrounded: 0
   CurrentMovementInput: {x: 0, y: 0}
+  groundCheckPos: {fileID: 1946487002}
+  groundCheckRadius: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &1265544590
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,7 +824,7 @@ GameObject:
   - component: {fileID: 1868245775}
   - component: {fileID: 1868245774}
   - component: {fileID: 1868245773}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Arena
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1152,6 +1164,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1946487001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1946487002}
+  m_Layer: 0
+  m_Name: GroundCheckPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1946487002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946487001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1223765034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1984410190
 GameObject:

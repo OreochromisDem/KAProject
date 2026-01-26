@@ -20,6 +20,11 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
+        if (ctx.IsJumpPressed & ctx.IsGrounded)
+        {
+            ctx.UseJumpInput();
+            SwitchState(factory.Jump());
+        }
         //Se houver movimento no analogico, troca para Move
         if (ctx.CurrentMovementInput.magnitude > 0.1f)
         {
