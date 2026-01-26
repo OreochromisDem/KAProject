@@ -566,7 +566,7 @@ GameObject:
   - component: {fileID: 1223765032}
   - component: {fileID: 1223765031}
   - component: {fileID: 1223765030}
-  - component: {fileID: 1223765029}
+  - component: {fileID: 1223765035}
   m_Layer: 0
   m_Name: Player_Base
   m_TagString: Untagged
@@ -574,21 +574,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1223765029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223765028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3601bf3d8fac8e24fa2cd671c056e5bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 6
-  gravityValue: -9.81
-  rotationSpeed: 10
 --- !u!114 &1223765030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,7 +601,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1223765029}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: OnMoveInput
         m_Mode: 0
@@ -735,6 +720,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1223765035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223765028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be9d9aa09c4f0024ba0af8296c8253c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
+  <Controller>k__BackingField: {fileID: 0}
+  <Input>k__BackingField: {fileID: 0}
+  <MoveSpeed>k__BackingField: 6
+  <RotationSpeed>k__BackingField: 10
+  <GravityValue>k__BackingField: -9.81
+  PlayerVelocity: {x: 0, y: 0, z: 0}
+  IsGrounded: 0
+  CurrentMovementInput: {x: 0, y: 0}
 --- !u!1 &1265544590
 GameObject:
   m_ObjectHideFlags: 0
