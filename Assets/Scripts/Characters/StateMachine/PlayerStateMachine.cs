@@ -17,6 +17,15 @@ public class PlayerStateMachine : MonoBehaviour
 
   [field: SerializeField] public float JumpBufferTime { get; private set; } = 0.2f;
   
+  
+  [Header("Dash configs")]
+  public float DashSpeed = 20f;
+  public float DashDuration = 0.2f;
+  public float DashCooldown = 1f;
+
+  [HideInInspector] public float DashCooldownTimer;
+  [HideInInspector] public bool IsDashPressed;
+  
   // -- Variaveis de Estados --
 
   public Vector3 PlayerVelocity; // Para controlar pulo e gravidade
@@ -29,6 +38,13 @@ public class PlayerStateMachine : MonoBehaviour
   [SerializeField] private Transform groundCheckPos;
   [SerializeField] private float groundCheckRadius = 0.2f;
   [SerializeField] private LayerMask groundLayer;
+  
+  [Header("Referencia da camera")]
+  public Transform MainCameraTransform;
+
+  [Header("Suavização de Rotação")] 
+  public float TurnSmoothTime = 0.1f;
+  [HideInInspector] public float TurnSmoothVelocity;
   
   public void UseJumpInput() => _jumpBufferTimer = 0;
   
@@ -48,6 +64,16 @@ public class PlayerStateMachine : MonoBehaviour
         
         //Inicializa a fabrica de estados
         _states = new PlayerStateFactory(this);
+        
+        //Busca automatica da cam principal
+        if (Camera.main != null)
+        {
+            MainCameraTransform = Camera.main.transform;
+        }
+        else
+        {
+            Debug.LogError("ERRO: Nenhuma MainCamera encontrada na cena (Tag MainCamera)!");
+        }
     }
     
     
@@ -64,6 +90,13 @@ public class PlayerStateMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        //Roda o timer do cooldown(dash)
+        if (DashCooldownTimer > 0)
+        {
+            DashCooldownTimer -= Time.deltaTime;
+        }
+        
         ReadInput();
         ApplyGravity();
         
@@ -88,6 +121,9 @@ public class PlayerStateMachine : MonoBehaviour
         }
         //o timer diminui a cada frame
         _jumpBufferTimer -= Time.deltaTime;
+        
+        //Leitura do dash
+        IsDashPressed = Input.actions["Dash"].triggered;
         
     }
 

@@ -34,7 +34,7 @@ public class PlayerMoveState : PlayerBaseState
         }
         
         //Se parou de mexer o analógico, volta para IDLE;
-        if (ctx.CurrentMovementInput.magnitude < 0.1f)
+        else if (ctx.CurrentMovementInput.magnitude < 0.1f)
         {
             SwitchState(factory.Idle());
         }
@@ -42,19 +42,22 @@ public class PlayerMoveState : PlayerBaseState
 
     private void Move()
     {
-        //Lógica de movimentação
-        Vector3 move = new Vector3(ctx.CurrentMovementInput.x, 0, ctx.CurrentMovementInput.y);
-        
-        //Movimento relativo a camera
-        ctx.Controller.Move(move * (ctx.MoveSpeed * Time.deltaTime));
-        
-        //Rotação
-        if (move != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(move);
-            ctx.transform.rotation = Quaternion.Slerp(ctx.transform.rotation, targetRotation, ctx.MoveSpeed * Time.deltaTime);
-        }
-        
+       //Calcula o angulo albo baseado no Input + Rotação da camera
+       float targetAngle = Mathf.Atan2(ctx.CurrentMovementInput.x, ctx.CurrentMovementInput.y) * Mathf.Rad2Deg + ctx.MainCameraTransform.eulerAngles.y;
+       
+       //Suaviza a rotação do personagem
+       float angle = Mathf.SmoothDampAngle(ctx.transform.eulerAngles.y, targetAngle, ref ctx.TurnSmoothVelocity,
+           ctx.TurnSmoothTime);
+       
+       //Aplica a rotação no personagem
+       ctx.transform.rotation = Quaternion.Euler(0f,angle,0f);
+       
+       //Calcula a direção do movimento baseada no ângulo Alvo
+       Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+       
+       //Move o perssonagem
+       ctx.Controller.Move(moveDir.normalized * (ctx.MoveSpeed * Time.deltaTime));
+
     }
 
     public override void InitializeSubState()
