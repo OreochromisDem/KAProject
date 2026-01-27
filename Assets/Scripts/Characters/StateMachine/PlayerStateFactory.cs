@@ -27,6 +27,11 @@ public class PlayerStateFactory
     {
         return new PlayerJumpState(_context, this);
     }
+
+    public PlayerBaseState Dash()
+    {
+        return new PlayerDashState(_context, this);
+    }
     
     
 }

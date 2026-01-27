@@ -14,6 +14,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerDashState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerIdleState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerMoveState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerStateMachine.cs" root0="FORCE_HIGHLIGHTING" />
@@ -109,7 +110,7 @@
       <workItem from="1769268159936" duration="1834000" />
       <workItem from="1769354722348" duration="3633000" />
       <workItem from="1769461036437" duration="1932000" />
-      <workItem from="1769549350481" duration="1157000" />
+      <workItem from="1769549350481" duration="3263000" />
     </task>
     <servers />
   </component>

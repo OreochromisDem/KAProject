@@ -23,7 +23,7 @@ public class PlayerStateMachine : MonoBehaviour
   public float DashDuration = 0.2f;
   public float DashCooldown = 1f;
 
-  [HideInInspector] public float DashCooldownTimer;
+   public float DashCooldownTimer;
   [HideInInspector] public bool IsDashPressed;
   
   // -- Variaveis de Estados --

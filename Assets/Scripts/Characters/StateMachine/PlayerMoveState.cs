@@ -27,6 +27,12 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
+        if (ctx.IsDashPressed && ctx.DashCooldownTimer <= 0)
+        {
+            SwitchState(factory.Dash());
+        }
+        
+        
         if (ctx.IsJumpPressed && ctx.IsGrounded)
         {
             ctx.UseJumpInput();
