@@ -20,6 +20,12 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
+        if (ctx.IsAttackPressed && ctx.IsGrounded)
+        {
+            ctx.UseAttackInput();
+            SwitchState(factory.Attack());
+        }
+        
         if (ctx.IsDashPressed && ctx.DashCooldownTimer <= 0)
         {
             SwitchState(factory.Dash());

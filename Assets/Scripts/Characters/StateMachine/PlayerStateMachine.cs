@@ -16,6 +16,15 @@ public class PlayerStateMachine : MonoBehaviour
   [field: SerializeField] public float JumpForce { get; private set; } = 5f;
 
   [field: SerializeField] public float JumpBufferTime { get; private set; } = 0.2f;
+
+
+  [Header("Combat")] 
+  public AttackSO CurrentAttack; // Onde arrastaremos o arquivo do golpe
+  public Renderer PlayerRenderer; // Alterar cor(debug)
+  [HideInInspector] public Color OriginalColor;
+  
+  //Input
+  [HideInInspector] public bool IsAttackPressed;
   
   
   [Header("Dash configs")]
@@ -74,6 +83,12 @@ public class PlayerStateMachine : MonoBehaviour
         {
             Debug.LogError("ERRO: Nenhuma MainCamera encontrada na cena (Tag MainCamera)!");
         }
+
+        //Salva a cor original para restaurar depois do soco
+        if (PlayerRenderer != null)
+        {
+            OriginalColor = PlayerRenderer.material.color;
+        }
     }
     
     
@@ -125,8 +140,16 @@ public class PlayerStateMachine : MonoBehaviour
         //Leitura do dash
         IsDashPressed = Input.actions["Dash"].triggered;
         
+        //Leitura do attack
+        if (Input.actions["Attack"].triggered)
+        {
+            IsAttackPressed = true;
+        }
+        
     }
 
+    public void UseAttackInput() => IsAttackPressed = false;
+    
     public void ApplyGravity()
     {
         //"Existe algum objeto da layer 'Ground' dentro de uma esfera no meu pé?"

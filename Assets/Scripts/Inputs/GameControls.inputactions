@@ -16,7 +16,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Attack_Light",
+                    "name": "Attack",
                     "type": "Button",
                     "id": "4e307b3e-0c2c-4fe8-af10-a5907ad86e37",
                     "expectedControlType": "",
@@ -117,7 +117,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack_Light",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -128,7 +128,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack_Light",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
