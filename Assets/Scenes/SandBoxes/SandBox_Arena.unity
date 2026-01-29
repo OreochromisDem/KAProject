@@ -682,7 +682,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 737c4d98b3b07e04194de1eee16c39bb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -748,6 +748,10 @@ MonoBehaviour:
   <GravityValue>k__BackingField: -9.81
   <JumpForce>k__BackingField: 15
   <JumpBufferTime>k__BackingField: 0.2
+  CurrentAttack: {fileID: 11400000, guid: cb539471bbae9224f9a072f78fe8e81b, type: 2}
+  PlayerRenderer: {fileID: 1223765032}
+  OriginalColor: {r: 0, g: 0, b: 0, a: 0}
+  IsAttackPressed: 0
   DashSpeed: 20
   DashDuration: 0.2
   DashCooldown: 2
@@ -1296,7 +1300,7 @@ Transform:
   m_GameObject: {fileID: 1984410190}
   serializedVersion: 2
   m_LocalRotation: {x: 0.35355338, y: 0.35355338, z: -0.1464466, w: 0.8535535}
-  m_LocalPosition: {x: -6.928217, y: 10.797977, z: -6.928217}
+  m_LocalPosition: {x: -7.499999, y: 11.606602, z: -7.499999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
