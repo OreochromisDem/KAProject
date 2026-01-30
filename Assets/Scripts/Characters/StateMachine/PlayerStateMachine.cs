@@ -20,6 +20,8 @@ public class PlayerStateMachine : MonoBehaviour
 
   [Header("Combat")] 
   public AttackSO CurrentAttack; // Onde arrastaremos o arquivo do golpe
+
+  public LayerMask HitLayer; // Configuração crucial: O que é inimigo?
   public Renderer PlayerRenderer; // Alterar cor(debug)
   [HideInInspector] public Color OriginalColor;
   
@@ -171,6 +173,14 @@ public class PlayerStateMachine : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(groundCheckPos.position, groundCheckRadius);
+        }
+
+        if (CurrentState != null)
+        {
+            Gizmos.color = Color.red;
+            // Simula a posição final da hitbox usando o TransformPoint
+            Vector3 gizmoPos = transform.TransformPoint(CurrentAttack.HitboxOffset);
+            Gizmos.DrawWireSphere(gizmoPos, CurrentAttack.HitboxRadius);
         }
     }
 

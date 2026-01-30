@@ -8,6 +8,9 @@ public class PlayerAttackState : PlayerBaseState
     private enum AttackPhase{Startup,Active,Recovery,Finished}
 
     private AttackPhase _currentPhase;
+
+    // Lista para garantir que não acertamos o mesmo inimigo 2x no mesmo soco
+    private System.Collections.Generic.List<IDamageable> _hitTargets = new System.Collections.Generic.List<IDamageable>();
     
     public PlayerAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
     {}
@@ -61,6 +64,9 @@ public class PlayerAttackState : PlayerBaseState
         //Fase 2 : Active (dano)
         else if (_currentPhase == AttackPhase.Active)
         {
+            // A CADA FRAME DA FASE ACTIVE, verificamos colisão
+            DetectHits();
+            
             if (_timer >= ctx.CurrentAttack.ActiveTime)
             {
                 //Active acabou -> Vai para recovery
@@ -111,5 +117,41 @@ public class PlayerAttackState : PlayerBaseState
     public override void InitializeSubState()
     {
         
+    }
+
+    private void DetectHits()
+    {
+        //1.Onde é o soco?
+        //Pegamos o offset do arquivo e convertemos para posição no Mundo Real
+        //baseada na rotação atual do personagem
+        Vector3 attackPos = ctx.transform.TransformPoint(ctx.CurrentAttack.HitboxOffset);
+        
+        //2.Qual o tamanho?
+        float attackRange = ctx.CurrentAttack.HitboxRadius;
+
+        
+        //3. Detectar colisão
+        Collider[] hitEnemies = Physics.OverlapSphere(attackPos, attackRange, ctx.HitLayer);
+
+        foreach (Collider enemy in hitEnemies)
+        {
+            //Security: Ignora o proprio colisor do atacante
+            if (enemy.gameObject == ctx.gameObject) continue;
+            
+            //Tenta achar o contato IDamageable no objeto que tocamos
+            IDamageable damageable = enemy.GetComponent<IDamageable>();
+
+            if (damageable != null)
+            {
+                //Verifica se ja nãoo batemos nesse inimigo neste mesmo ataque
+                if (!_hitTargets.Contains(damageable))
+                {
+                    damageable.TakeDamage(ctx.CurrentAttack.Damage); // Aplica o dano
+                    _hitTargets.Add(damageable); // Adiciona na lista negra para não bater de novo
+                }
+            }
+        }
+
+
     }
 }
