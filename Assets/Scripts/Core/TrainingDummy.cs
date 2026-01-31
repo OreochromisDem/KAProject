@@ -1,52 +1,76 @@
-using System;
 using UnityEngine;
 using System.Collections;
 
+// Exige que tenha HealthComponent e Rigidbody para funcionar
+[RequireComponent(typeof(HealthComponent))]
 [RequireComponent(typeof(Rigidbody))]
-public class TrainingDummy : MonoBehaviour, IDamageable
+public class TrainingDummy : MonoBehaviour
 {
-    [SerializeField] private Renderer _renderer;
-    private Color _originalColor;
+    private HealthComponent _health;
     private Rigidbody _rb;
+    private Renderer _renderer;
+    private Color _originalColor;
 
     private void Awake()
     {
+        _health = GetComponent<HealthComponent>();
         _rb = GetComponent<Rigidbody>();
-        if (_renderer == null) _renderer = GetComponent<Renderer>();
-        _originalColor = _renderer.material.color;
-    }
-
-
-    // Essa é a função que o Player vai chamar quando acertar o soco
-    public void TakeDamage(float damageAmount, Vector3 hitDirection, float knockbackForce)
-    {
-        Debug.Log($"[DUMMY] Aii! Tomei {damageAmount} de dano.");
-       
-        StartCoroutine(FlashRed());
+        _renderer = GetComponent<Renderer>();
         
-        //Aplica o knockback
-        _rb.AddForce(hitDirection * knockbackForce, ForceMode.Impulse);
-
+        if (_renderer != null) 
+            _originalColor = _renderer.material.color;
     }
 
-    private IEnumerator FlashRed()
+    private void OnEnable()
     {
-        _renderer.material.color = Color.white; // Pisca branco
+        // Conecta os ouvidos nos eventos do componente de vida
+        _health.OnDamageTaken.AddListener(HandleDamageVisuals);
+        _health.OnKnockback.AddListener(HandleKnockback);
+        _health.OnDeath.AddListener(HandleDeath);
+    }
+
+    private void OnDisable()
+    {
+        // Desconecta para evitar erros
+        _health.OnDamageTaken.RemoveListener(HandleDamageVisuals);
+        _health.OnKnockback.RemoveListener(HandleKnockback);
+        _health.OnDeath.RemoveListener(HandleDeath);
+    }
+
+    // --- REAÇÕES ---
+
+    // Reação 1: Feedback Visual (Piscar)
+    private void HandleDamageVisuals(float amount)
+    {
+        if (_renderer != null) StartCoroutine(FlashColor());
+    }
+
+    // Reação 2: Física (Voar longe)
+    private void HandleKnockback(Vector3 direction, float force)
+    {
+        // Reseta a velocidade atual para o impacto ser consistente
+        _rb.linearVelocity = Vector3.zero; 
+        
+        // Aplica o empurrão
+        _rb.AddForce(direction * force, ForceMode.Impulse);
+    }
+
+    // Reação 3: Morte (Sumir ou Desativar)
+    private void HandleDeath()
+    {
+        Debug.Log("Dummy foi destruído!");
+        // Opcional: Tocar partículas de explosão
+        // Destroy(gameObject, 0.5f); // Destroi após meio segundo
+        
+        // Para teste, apenas desativa o colisor e tomba
+        GetComponent<Collider>().enabled = false;
+        transform.Rotate(90, 0, 0);
+    }
+
+    private IEnumerator FlashColor()
+    {
+        _renderer.material.color = Color.white; // Flash Branco
         yield return new WaitForSeconds(0.1f);
         _renderer.material.color = _originalColor;
     }
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-   
 }

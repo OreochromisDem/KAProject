@@ -37,6 +37,11 @@ public class PlayerStateFactory
     {
         return new PlayerAttackState(_context, this);
     }
+
+    public PlayerDeadState Dead()
+    {
+        return new PlayerDeadState(_context, this);
+    }
     
     
 }

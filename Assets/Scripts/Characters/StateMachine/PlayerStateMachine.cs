@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.UIElements;
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(HealthComponent))]
 public class PlayerStateMachine : MonoBehaviour
 {
   // --- Referências Globais ( o que os estados podem acessar) ---
@@ -17,7 +19,10 @@ public class PlayerStateMachine : MonoBehaviour
 
   [field: SerializeField] public float JumpBufferTime { get; private set; } = 0.2f;
 
-
+  private HealthComponent _health;
+  private Vector3 _impactVelocity;
+  private PlayerInput _playerInput;
+  
   [Header("Combat")] 
   public AttackSO CurrentAttack; // Onde arrastaremos o arquivo do golpe
 
@@ -75,6 +80,7 @@ public class PlayerStateMachine : MonoBehaviour
      // -- Maquina de Estados --
     private PlayerBaseState _currentState;
     private PlayerStateFactory _states;
+    
 
     //Getters para a Fábrica
     public PlayerBaseState CurrentState {get {return _currentState;} set{_currentState = value;}}
@@ -85,6 +91,8 @@ public class PlayerStateMachine : MonoBehaviour
         //Pega as referencias automaticamente
         Controller = GetComponent<CharacterController>();
         Input = GetComponent<PlayerInput>();
+        _health = GetComponent<HealthComponent>();
+        _playerInput = GetComponent<PlayerInput>();
         
         //Inicializa a fabrica de estados
         _states = new PlayerStateFactory(this);
@@ -141,11 +149,11 @@ public class PlayerStateMachine : MonoBehaviour
     private void ReadInput()
     {
         //Lê o input direto do sistema novo. "Move" é o nome do action no seu arquivo .inputactions
-        CurrentMovementInput = Input.actions["Move"].ReadValue<Vector2>();
+        CurrentMovementInput = _playerInput.actions["Move"].ReadValue<Vector2>();
 
         // Lógica do Buffer:
         // Se apertou o botão, enche o timer (0.2s)
-        if (Input.actions["Jump"].triggered)
+        if (_playerInput.actions["Jump"].triggered)
         {
             _jumpBufferTimer = JumpBufferTime;
         }
@@ -153,10 +161,10 @@ public class PlayerStateMachine : MonoBehaviour
         _jumpBufferTimer -= Time.deltaTime;
         
         //Leitura do dash
-        IsDashPressed = Input.actions["Dash"].triggered;
+        IsDashPressed = _playerInput.actions["Dash"].triggered;
         
         //Leitura do attack
-        if (Input.actions["Attack"].triggered)
+        if (_playerInput.actions["Attack"].triggered)
         {
             _attackBufferTimer = InputBufferTime;
         }
@@ -183,6 +191,12 @@ public class PlayerStateMachine : MonoBehaviour
         
         PlayerVelocity.y += GravityValue * Time.deltaTime;
         Controller.Move(PlayerVelocity * Time.deltaTime);
+
+        if (_impactVelocity.magnitude > 0.2f)
+        {
+            Controller.Move(_impactVelocity *  Time.deltaTime);
+            _impactVelocity = Vector3.Lerp(_impactVelocity, Vector3.zero, 5f* Time.deltaTime);
+        }
     }
     
      //Desenha a esfera no editor
@@ -201,6 +215,53 @@ public class PlayerStateMachine : MonoBehaviour
             Vector3 gizmoPos = transform.TransformPoint(CurrentAttack.HitboxOffset);
             Gizmos.DrawWireSphere(gizmoPos, CurrentAttack.HitboxRadius);
         }
+    }
+
+    private void OnEnable()
+    {
+        // INSCREVER: Quando o evento OnDeath acontecer, execute o método HandleDeath
+        _health.OnDeath.AddListener(HandleDeath);
+        _health.OnKnockback.AddListener(HandleKnockback);
+    }
+
+    private void OnDisable()
+    {
+        // DESINSCREVER
+        _health.OnDeath.RemoveListener(HandleDeath);
+        _health.OnKnockback.RemoveListener(HandleKnockback);
+        
+    }
+
+    private void HandleDeath()
+    {
+        if (CurrentState != null)
+        {
+            CurrentState.ExitState();
+        }
+        
+        CurrentState = _states.Dead();
+        
+        CurrentState.EnterState();
+    }
+
+    private void HandleKnockback(Vector3 direction, float force)
+    {
+        _impactVelocity = direction * force;
+    }
+    
+    public void SwitchState(PlayerBaseState newState)
+    {
+        // 1. Se tem estado atual, roda a limpeza (Exit)
+        if (CurrentState != null)
+        {
+            CurrentState.ExitState();
+        }
+
+        // 2. Troca a referência
+        CurrentState = newState;
+
+        // 3. Inicia o novo estado (Enter)
+        CurrentState.EnterState();
     }
 
     private void FixedUpdate()
