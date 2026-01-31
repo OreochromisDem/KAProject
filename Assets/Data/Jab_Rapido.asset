@@ -17,6 +17,6 @@ MonoBehaviour:
   ActiveTime: 0.1
   RecoveryTime: 0.2
   Damage: 10
-  Knockback: 0
+  Knockback: 10
   HitboxRadius: 0.5
   HitboxOffset: {x: 0, y: 0, z: 0.8}

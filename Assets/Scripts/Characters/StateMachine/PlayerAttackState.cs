@@ -23,6 +23,14 @@ public class PlayerAttackState : PlayerBaseState
         //Zera tudo
         _timer = 0;
         _currentPhase = AttackPhase.Startup;
+        _hitTargets.Clear(); // Limpa a lista de quem apanhou
+        
+        //Security: Garante que temos um ataque configurado
+        if (ctx.CurrentAttack == null)
+        {
+            SwitchState(factory.Idle());
+            return;
+        }
         
         //Trava o personagem
         ctx.PlayerVelocity.x = 0;
@@ -37,10 +45,16 @@ public class PlayerAttackState : PlayerBaseState
 
     public override void UpdateState()
     {
+        // Se por algum milagre o estado travar por 2 segundos, ele se auto-destrói
+        if (_timer > 2.0f)
+        {
+            SwitchState(factory.Idle());
+            return;
+        }
+        
        _timer += Time.deltaTime;
        //A logica das fases
        ProcessAttackPhases();
-       
        CheckSwitchStates();
     }
 
@@ -98,6 +112,8 @@ public class PlayerAttackState : PlayerBaseState
     {
         //Restaura a cor original
         if(ctx.PlayerRenderer != null) ctx.PlayerRenderer.material.color = ctx.OriginalColor;
+        
+        _hitTargets.Clear();
     }
 
     public override void CheckSwitchStates()
@@ -146,7 +162,14 @@ public class PlayerAttackState : PlayerBaseState
                 //Verifica se ja nãoo batemos nesse inimigo neste mesmo ataque
                 if (!_hitTargets.Contains(damageable))
                 {
-                    damageable.TakeDamage(ctx.CurrentAttack.Damage); // Aplica o dano
+                    //Calculo Knockback
+                    //1. Para onde o inimigo deve voar?
+                    Vector3 direction = (enemy.transform.position - ctx.transform.position).normalized;
+                    
+                    //2.Ignorar altura para o inimigo não voar para baixo/cima
+                    direction.y = 0;
+                    // 3. Envia o pacote completo (Dano do Arquivo + Direção Calculada + Força do Arquivo)
+                    damageable.TakeDamage(ctx.CurrentAttack.Damage,direction,ctx.CurrentAttack.Knockback); // Aplica o dano
                     _hitTargets.Add(damageable); // Adiciona na lista negra para não bater de novo
                 }
             }

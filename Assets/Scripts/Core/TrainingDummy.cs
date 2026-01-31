@@ -1,23 +1,31 @@
 using System;
 using UnityEngine;
 using System.Collections;
+
+[RequireComponent(typeof(Rigidbody))]
 public class TrainingDummy : MonoBehaviour, IDamageable
 {
     [SerializeField] private Renderer _renderer;
     private Color _originalColor;
+    private Rigidbody _rb;
 
     private void Awake()
     {
+        _rb = GetComponent<Rigidbody>();
         if (_renderer == null) _renderer = GetComponent<Renderer>();
         _originalColor = _renderer.material.color;
     }
 
 
     // Essa é a função que o Player vai chamar quando acertar o soco
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(float damageAmount, Vector3 hitDirection, float knockbackForce)
     {
         Debug.Log($"[DUMMY] Aii! Tomei {damageAmount} de dano.");
+       
         StartCoroutine(FlashRed());
+        
+        //Aplica o knockback
+        _rb.AddForce(hitDirection * knockbackForce, ForceMode.Impulse);
 
     }
 

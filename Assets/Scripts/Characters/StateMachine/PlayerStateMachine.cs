@@ -24,9 +24,12 @@ public class PlayerStateMachine : MonoBehaviour
   public LayerMask HitLayer; // Configuração crucial: O que é inimigo?
   public Renderer PlayerRenderer; // Alterar cor(debug)
   [HideInInspector] public Color OriginalColor;
+
+//  public float AttackCooldown = 0.5f;
+  //[HideInInspector] public float AttackCooldownTimer;
   
   //Input
-  [HideInInspector] public bool IsAttackPressed;
+  
   
   
   [Header("Dash configs")]
@@ -44,6 +47,16 @@ public class PlayerStateMachine : MonoBehaviour
   public Vector2 CurrentMovementInput; // X e Y do controle
   private float _jumpBufferTimer;
   public bool IsJumpPressed => _jumpBufferTimer > 0;
+  
+  
+  [Header("Input buffer")]
+  public float InputBufferTime = 0.2f;
+
+  private float _attackBufferTimer;
+  
+  [HideInInspector] public bool IsAttackPressed => _attackBufferTimer > 0;
+
+  public void UseAttackInput() => _attackBufferTimer = 0;
   
   [Header("Configurações de Chão")]
   [SerializeField] private Transform groundCheckPos;
@@ -145,12 +158,18 @@ public class PlayerStateMachine : MonoBehaviour
         //Leitura do attack
         if (Input.actions["Attack"].triggered)
         {
-            IsAttackPressed = true;
+            _attackBufferTimer = InputBufferTime;
+        }
+        
+        //O timer diminui a cada frame
+        if (_attackBufferTimer > 0)
+        {
+            _attackBufferTimer -= Time.deltaTime;
         }
         
     }
 
-    public void UseAttackInput() => IsAttackPressed = false;
+    
     
     public void ApplyGravity()
     {

@@ -437,6 +437,7 @@ GameObject:
   - component: {fileID: 205272969}
   - component: {fileID: 205272968}
   - component: {fileID: 205272967}
+  - component: {fileID: 205272972}
   m_Layer: 7
   m_Name: Training Dummy
   m_TagString: Untagged
@@ -549,6 +550,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &205272972
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205272966}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!1 &1061659220
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,7 +907,8 @@ MonoBehaviour:
     m_Bits: 136
   PlayerRenderer: {fileID: 1223765032}
   OriginalColor: {r: 0, g: 0, b: 0, a: 0}
-  IsAttackPressed: 0
+  AttackCooldown: 0.5
+  AttackCooldownTimer: 0
   DashSpeed: 20
   DashDuration: 0.2
   DashCooldown: 2
@@ -888,6 +917,7 @@ MonoBehaviour:
   PlayerVelocity: {x: 0, y: 0, z: 0}
   IsGrounded: 0
   CurrentMovementInput: {x: 0, y: 0}
+  InputBufferTime: 0.2
   groundCheckPos: {fileID: 1946487002}
   groundCheckRadius: 0.2
   groundLayer:

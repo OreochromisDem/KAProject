@@ -27,29 +27,32 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
-        if (ctx.IsAttackPressed && ctx.IsGrounded)
-        {
-            ctx.UseAttackInput();
-            SwitchState(factory.Attack());
-        }
-        
         
         if (ctx.IsDashPressed && ctx.DashCooldownTimer <= 0)
         {
             SwitchState(factory.Dash());
+            return;
         }
         
+        if (ctx.IsAttackPressed && ctx.IsGrounded)
+        {
+            ctx.UseAttackInput();
+            SwitchState(factory.Attack());
+            return;
+        }
         
         if (ctx.IsJumpPressed && ctx.IsGrounded)
         {
             ctx.UseJumpInput();
             SwitchState(factory.Jump());
+            return;
         }
         
         //Se parou de mexer o analógico, volta para IDLE;
-        else if (ctx.CurrentMovementInput.magnitude < 0.1f)
+         if (ctx.CurrentMovementInput.magnitude < 0.1f)
         {
             SwitchState(factory.Idle());
+            return;
         }
     }
 
