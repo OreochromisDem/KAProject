@@ -181,6 +181,8 @@ public class PlayerStateMachine : MonoBehaviour
     
     public void ApplyGravity()
     {
+        if(!Controller.enabled)return;
+        
         //"Existe algum objeto da layer 'Ground' dentro de uma esfera no meu pé?"
         IsGrounded = Physics.CheckSphere(groundCheckPos.position, groundCheckRadius, groundLayer);
 
