@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 public class ArenaCamera : MonoBehaviour
 {
     [Header("Alvos")] 
@@ -16,6 +17,7 @@ public class ArenaCamera : MonoBehaviour
 
     private Vector3 _velocity;
     private Camera _cam;
+    private Vector3 _shakeOffset;
 
     private void Awake()
     {
@@ -38,7 +40,12 @@ public class ArenaCamera : MonoBehaviour
         Vector3 newPosition = centerPoint + Offset;
         
         // SmoothDamp faz o movimento ser "manteiga", sem travar
-        transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref _velocity, SmoothTime);
+        Vector3 smoothedPos = Vector3.SmoothDamp(transform.position, newPosition, ref _velocity, SmoothTime);
+        
+        //soma o tremor na posição final
+        transform.position = smoothedPos + _shakeOffset;
+        
+        
     }
 
     private void Zoom()
@@ -78,6 +85,29 @@ public class ArenaCamera : MonoBehaviour
         }
         // Retorna a largura (X) ou profundidade (Z), o que for maior
         return Mathf.Max(bounds.size.x, bounds.size.z);
+    }
+
+    public void Shake(float intensity, float duration)
+    {
+        StartCoroutine(ShakeRoutine(intensity, duration));
+
+    }
+
+    private IEnumerator ShakeRoutine(float intensity, float duration)
+    {
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            //Cria um vetor aleatório pequeno
+            float x = Random.Range(-1f, 1f) * intensity;
+            float y = Random.Range(-1f, 1f) * intensity;
+            
+            _shakeOffset = new Vector3(x, y, 0);
+            
+            elapsed += Time.deltaTime;
+            yield return null; // Espera o proximo frame
+        }
+        _shakeOffset = Vector3.zero; // Reseta quando acabar
     }
     
     
