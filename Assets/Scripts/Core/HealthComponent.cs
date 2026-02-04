@@ -6,6 +6,12 @@ public class HealthComponent : MonoBehaviour, IDamageable
 {
     [Header("Configuração")]
     public float MaxHealth = 100f;
+
+    [Header("Defesa")] 
+    public bool IsBlocking = false;
+    
+    [Range(0f,1f)]
+    public float BlockDamageMultiplier = 0.3f; // 30% do dano recebido
     
     [Header("Debug")]
     public float CurrentHealth;
@@ -25,6 +31,19 @@ public class HealthComponent : MonoBehaviour, IDamageable
     public void TakeDamage(float damageAmount, Vector3 hitDirection, float knockbackForce)
     {
         if (CurrentHealth <= 0) return; // Morreu, sem ação.
+
+        if (IsBlocking)
+        {
+            //Reduz o dano
+            damageAmount *= BlockDamageMultiplier;
+            
+            
+            //Reduz knockback
+            knockbackForce *= 0.2f;
+            
+            Debug.Log($"<color=blue>BLOQUEIO! Dano reduzido para {damageAmount}</color>");
+        }
+        
         
         //1.Aplica o dano
         CurrentHealth -= damageAmount;

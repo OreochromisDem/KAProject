@@ -10,18 +10,27 @@ public class PlayerStateMachine : MonoBehaviour
   //Getters e Setters para que os estados leiam as variaveis do player
   [field : SerializeField] public CharacterController Controller { get; private set; }
   [field : SerializeField] public PlayerInput Input { get; private set; }
+  [HideInInspector] public bool IsBlockPressed;
   
   //Variaveis de configuração(stats)
   [field: SerializeField] public float MoveSpeed { get; private set; } = 6f;
   [field: SerializeField] public float RotationSpeed { get; private set; } = 10f;
   [field: SerializeField] public float GravityValue { get; private set; } = -9.81f;
   [field: SerializeField] public float JumpForce { get; private set; } = 5f;
+  [field: SerializeField] public HealthComponent HealthComp { get; private set; }
 
   [field: SerializeField] public float JumpBufferTime { get; private set; } = 0.2f;
 
-  private HealthComponent _health;
+  
   private Vector3 _impactVelocity;
   private PlayerInput _playerInput;
+  
+  
+  
+  [Header("Visuals")]
+  public TrailRenderer DashTrail;
+
+  public GameObject ShieldVisual;
   
   [Header("Combat")] 
   public AttackSO CurrentAttack; // Onde arrastaremos o arquivo do golpe
@@ -42,7 +51,7 @@ public class PlayerStateMachine : MonoBehaviour
   public float DashDuration = 0.2f;
   public float DashCooldown = 1f;
   public AnimationCurve DashSpeedCurve;
-  public TrailRenderer DashTrail;
+  
   public bool IsInvincible = false;
   public float DashCooldownTimer;
   [HideInInspector] public bool IsDashPressed;
@@ -93,7 +102,7 @@ public class PlayerStateMachine : MonoBehaviour
         //Pega as referencias automaticamente
         Controller = GetComponent<CharacterController>();
         Input = GetComponent<PlayerInput>();
-        _health = GetComponent<HealthComponent>();
+        HealthComp = GetComponent<HealthComponent>();
         _playerInput = GetComponent<PlayerInput>();
         
         //Inicializa a fabrica de estados
@@ -176,11 +185,20 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _attackBufferTimer -= Time.deltaTime;
         }
+
+        if (_playerInput.actions["Block"].IsPressed())
+        {
+            IsBlockPressed = true;
+        }
+        else
+        {
+            IsBlockPressed = false;
+        }
         
     }
+    
 
-    
-    
+
     public void ApplyGravity()
     {
         if(!Controller.enabled)return;
@@ -224,15 +242,15 @@ public class PlayerStateMachine : MonoBehaviour
     private void OnEnable()
     {
         // INSCREVER: Quando o evento OnDeath acontecer, execute o método HandleDeath
-        _health.OnDeath.AddListener(HandleDeath);
-        _health.OnKnockback.AddListener(HandleKnockback);
+        HealthComp.OnDeath.AddListener(HandleDeath);
+        HealthComp.OnKnockback.AddListener(HandleKnockback);
     }
 
     private void OnDisable()
     {
         // DESINSCREVER
-        _health.OnDeath.RemoveListener(HandleDeath);
-        _health.OnKnockback.RemoveListener(HandleKnockback);
+        HealthComp.OnDeath.RemoveListener(HandleDeath);
+        HealthComp.OnKnockback.RemoveListener(HandleKnockback);
         
     }
 

@@ -40,6 +40,12 @@ public class PlayerMoveState : PlayerBaseState
             SwitchState(factory.Attack());
             return;
         }
+
+        if (ctx.IsBlockPressed && ctx.IsGrounded)
+        {
+            SwitchState(factory.Block());
+            return;
+        }
         
         if (ctx.IsJumpPressed && ctx.IsGrounded)
         {

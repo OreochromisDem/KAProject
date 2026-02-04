@@ -42,6 +42,11 @@ public class PlayerStateFactory
     {
         return new PlayerDeadState(_context, this);
     }
+
+    public PlayerBlockState Block()
+    {
+        return new PlayerBlockState(_context, this);
+    }
     
     
 }
