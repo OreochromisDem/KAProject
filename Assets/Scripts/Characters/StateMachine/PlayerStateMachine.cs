@@ -41,8 +41,10 @@ public class PlayerStateMachine : MonoBehaviour
   public float DashSpeed = 20f;
   public float DashDuration = 0.2f;
   public float DashCooldown = 1f;
-
-   public float DashCooldownTimer;
+  public AnimationCurve DashSpeedCurve;
+  public TrailRenderer DashTrail;
+  public bool IsInvincible = false;
+  public float DashCooldownTimer;
   [HideInInspector] public bool IsDashPressed;
   
   // -- Variaveis de Estados --

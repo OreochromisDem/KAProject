@@ -5,7 +5,8 @@ public class PlayerDashState : PlayerBaseState
 {
     private float _dashTimeCounter;
     private Vector3 _dashDirection;
-    
+
+    private float _startDashTime;
     public PlayerDashState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
     {
     }
@@ -15,6 +16,16 @@ public class PlayerDashState : PlayerBaseState
         //Inicia cooldown
         ctx.DashCooldownTimer = ctx.DashCooldown;
         _dashTimeCounter = ctx.DashDuration;
+        _startDashTime = ctx.DashDuration;
+        
+        //Ativa trail
+        if (ctx.DashTrail != null)
+        {
+            ctx.DashTrail.emitting = true;
+        }
+        
+        //Ativa Invencibilidade
+        ctx.IsInvincible = true;
         
         //Define a direção do Dash
         Vector2 input = ctx.CurrentMovementInput;
@@ -40,6 +51,14 @@ public class PlayerDashState : PlayerBaseState
 
     public override void UpdateState()
     {
+        //Calcula quanto tempo ja passou em porcentagem
+        float normalizedTime = 1 - (_dashTimeCounter/_startDashTime);
+        
+        //Pega a velocidade na curva 
+        // Se a curva for decrescente, ele começa rápido e freia no final.
+        float speedMultiplier = ctx.DashSpeedCurve.Evaluate(normalizedTime);
+        
+        
         //Move sem gravidade para dar sensação de impulso
         ctx.Controller.Move(_dashDirection * (ctx.DashSpeed * Time.deltaTime));
 
@@ -56,7 +75,12 @@ public class PlayerDashState : PlayerBaseState
 
     public override void ExitState()
     {
-       
+       //Limpeza: Desliga o rastro e a invencibilidade
+       if (ctx.DashTrail != null)
+       {
+           ctx.DashTrail.emitting = false;
+       }
+       ctx.IsInvincible = false;
     }
 
     public override void CheckSwitchStates()

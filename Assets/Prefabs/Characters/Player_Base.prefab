@@ -424,6 +424,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!143 &5505545340473636255
 CharacterController:
@@ -536,6 +537,14 @@ MonoBehaviour:
   DashSpeed: 20
   DashDuration: 0.2
   DashCooldown: 2
+  DashSpeedCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  DashTrail: {fileID: 0}
+  IsInvincible: 0
   DashCooldownTimer: 0
   IsDashPressed: 0
   PlayerVelocity: {x: 0, y: 0, z: 0}
