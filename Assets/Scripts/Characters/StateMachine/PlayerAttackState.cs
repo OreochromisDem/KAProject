@@ -20,6 +20,12 @@ public class PlayerAttackState : PlayerBaseState
     
     public override void EnterState()
     {
+        
+        // Consome o Input Buffer imediatamente para não repetir ataque sem querer
+        ctx.UseAttackInput();
+        
+        
+        
         //Zera tudo
         _timer = 0;
         _currentPhase = AttackPhase.Startup;
@@ -33,14 +39,13 @@ public class PlayerAttackState : PlayerBaseState
         }
         
         //Trava o personagem
-        ctx.PlayerVelocity.x = 0;
-        ctx.PlayerVelocity.y = 0;
+        ctx.PlayerVelocity = Vector3.zero;
         
         //Debug visual amarelo (preparando)
         if (ctx.PlayerRenderer != null) ctx.PlayerRenderer.material.color = Color.yellow;
-
+        
         // Debug Log
-        Debug.Log($"Iniciando ataque: {ctx.CurrentAttack.AttackName}");
+        Debug.Log($"👊 GOLPE {ctx.ComboIndex + 1}: {ctx.CurrentAttack.AttackName}");
     }
 
     public override void UpdateState()
@@ -118,15 +123,38 @@ public class PlayerAttackState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
-        //Só permite sair do estado quando todas as fases terminarem
+       // Só tomamos decisão quando o golpe atual termina.
         if (_currentPhase == AttackPhase.Finished)
         {
-            if(ctx.CurrentMovementInput.magnitude > 0.1f)
-                SwitchState(factory.Move());
+            // O jogador apertou ataque DURANTE a animação deste golpe? (Input Buffer)
+            // E AINDA temos golpes na lista para fazer?
+            if (ctx.IsAttackPressed && ctx.ComboIndex <= ctx.ComboChain.Length - 1)
+            {
+                ctx.ComboIndex++;
+                SwitchState(factory.Attack()); // Reinicia o estado para o próximo soco
+            }
+           //Acabou o combo, voltar a se mover
             else
             {
-                SwitchState(factory.Idle());
+                //Reseta o combo para proxima vez
+                ctx.ComboIndex = 0;
+                
+                
+                // Se o jogador estiver segurando o analógico, vai direto pro Mov
+                if(ctx.CurrentMovementInput.magnitude > 0.1f)
+                    SwitchState(factory.Move());
+                else
+                {
+                    SwitchState(factory.Idle());
+                }
+
             }
+            
+            
+            
+            
+            
+            
         }
     }
 

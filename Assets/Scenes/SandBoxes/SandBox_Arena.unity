@@ -520,7 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a907a67b18f04194999ac17f3d30b536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatFeedback
-  HitStopDuration: 0.15
+  HitStopDuration: 0.05
   ShakeIntensity: 0.05
   ShakeDuration: 0.05
 --- !u!4 &274768268 stripped
@@ -1751,6 +1751,22 @@ PrefabInstance:
       propertyPath: ShieldVisual
       value: 
       objectReference: {fileID: 444650027}
+    - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
+      propertyPath: ComboChain.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
+      propertyPath: 'ComboChain.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: cb539471bbae9224f9a072f78fe8e81b, type: 2}
+    - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
+      propertyPath: 'ComboChain.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fbf4b54c9b19acd46a94f318e02c58e8, type: 2}
+    - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
+      propertyPath: 'ComboChain.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5baf96e94dec6e1469782207e7e2e74c, type: 2}
     - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
       propertyPath: DashSpeedCurve.m_Curve.Array.size
       value: 2

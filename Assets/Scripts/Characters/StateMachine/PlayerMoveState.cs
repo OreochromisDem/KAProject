@@ -36,7 +36,7 @@ public class PlayerMoveState : PlayerBaseState
         
         if (ctx.IsAttackPressed && ctx.IsGrounded)
         {
-            ctx.UseAttackInput();
+            ctx.ComboIndex = 0;
             SwitchState(factory.Attack());
             return;
         }

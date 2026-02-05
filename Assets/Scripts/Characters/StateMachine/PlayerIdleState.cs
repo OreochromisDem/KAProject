@@ -29,8 +29,8 @@ public class PlayerIdleState : PlayerBaseState
         }
         // Prioridade 2: Ataque (Só se estiver no chão)
          if (ctx.IsAttackPressed && ctx.IsGrounded)
-        {
-            ctx.UseAttackInput();
+         {
+             ctx.ComboIndex = 0;
             SwitchState(factory.Attack());
             return;
         }
