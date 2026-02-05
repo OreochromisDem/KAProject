@@ -19,7 +19,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
     [Header("Eventos")] 
     public UnityEvent OnDeath;
     public UnityEvent<float> OnDamageTaken; // Passa o dano recebido
-    public UnityEvent<Vector3, float> OnKnockback; // Passa a direção e força
+    public UnityEvent<Vector3, float, float> OnKnockback; // Passa a direção e força ,hitstun
 
 
     private void Awake()
@@ -28,7 +28,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
     }
 
 
-    public void TakeDamage(float damageAmount, Vector3 hitDirection, float knockbackForce)
+    public void TakeDamage(float damageAmount, Vector3 hitDirection, float knockbackForce,float stunDuration)
     {
         if (CurrentHealth <= 0) return; // Morreu, sem ação.
 
@@ -40,6 +40,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
             
             //Reduz knockback
             knockbackForce *= 0.2f;
+            stunDuration = 0f; // Anula hit stun se defender
             
             Debug.Log($"<color=blue>BLOQUEIO! Dano reduzido para {damageAmount}</color>");
         }
@@ -51,7 +52,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
         
         //2.Dispara eventos
         OnDamageTaken?.Invoke(damageAmount);
-        OnKnockback?.Invoke(hitDirection, knockbackForce);
+        OnKnockback?.Invoke(hitDirection, knockbackForce,stunDuration);
         
         //3. Checa a morte
         if (CurrentHealth <= 0)

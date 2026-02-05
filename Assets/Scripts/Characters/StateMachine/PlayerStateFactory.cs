@@ -47,6 +47,11 @@ public class PlayerStateFactory
     {
         return new PlayerBlockState(_context, this);
     }
+
+    public PlayerHitStunState HitStun()
+    {
+        return new PlayerHitStunState(_context, this);
+    }
     
     
 }

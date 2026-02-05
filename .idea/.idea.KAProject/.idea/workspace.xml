@@ -18,6 +18,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerBlockState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerDashState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerDeadState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerHitStunState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerIdleState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerMoveState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerStateMachine.cs" root0="FORCE_HIGHLIGHTING" />
@@ -125,7 +126,7 @@
       <workItem from="1770069702725" duration="4050000" />
       <workItem from="1770155251143" duration="3858000" />
       <workItem from="1770242824847" duration="802000" />
-      <workItem from="1770327037137" duration="2937000" />
+      <workItem from="1770327037137" duration="4883000" />
     </task>
     <servers />
   </component>
@@ -158,6 +159,19 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Characters/StateMachine/PlayerStateMachine.cs</url>
+          <line>295</line>
+          <properties documentPath="C:\Users\Oreo\Documents\UnityP\KAProject\Assets\Scripts\Characters\StateMachine\PlayerStateMachine.cs" containingFunctionPresentation="Method 'HandleKnockback'">
+            <startOffsets>
+              <option value="9812" />
+            </startOffsets>
+            <endOffsets>
+              <option value="9843" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

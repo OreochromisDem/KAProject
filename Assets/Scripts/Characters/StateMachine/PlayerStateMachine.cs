@@ -87,6 +87,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Vector3 PlayerVelocity; // Controla velocidade vertical (gravidade/pulo)
     public bool IsGrounded;
     private Vector3 _impactVelocity; // Força externa (Knockback)
+    [HideInInspector] public float PendingStunDuration;
 
     // --- Inputs e Buffers ---
     public Vector2 CurrentMovementInput;
@@ -278,10 +279,22 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState.EnterState();
     }
 
-    private void HandleKnockback(Vector3 direction, float force)
+    private void HandleKnockback(Vector3 direction, float force, float stunDuration)
     {
         // Aplica uma força instantânea que decai no ApplyGravity
         _impactVelocity = direction * force;
+        
+        //Se estiver defendendo , não entra no estado de HitStun
+        if (HealthComp.IsBlocking) return;
+        
+        //Se não estiver morto, aplica o HitStun
+        if (CurrentState != _states.Dead())
+        {
+            //Salva o tempo na variavel publica para o estado ler
+            PendingStunDuration = stunDuration;
+            //Força a entrada no estado de hit stun(interrompe ataque)
+            SwitchState(_states.HitStun());
+        }
     }
     #endregion
 

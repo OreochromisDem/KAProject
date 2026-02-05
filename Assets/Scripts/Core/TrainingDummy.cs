@@ -46,7 +46,7 @@ public class TrainingDummy : MonoBehaviour
     }
 
     // Reação 2: Física (Voar longe)
-    private void HandleKnockback(Vector3 direction, float force)
+    private void HandleKnockback(Vector3 direction, float force,float stunDuration)
     {
         // Reseta a velocidade atual para o impacto ser consistente
         _rb.linearVelocity = Vector3.zero; 

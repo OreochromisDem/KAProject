@@ -197,7 +197,7 @@ public class PlayerAttackState : PlayerBaseState
                     //2.Ignorar altura para o inimigo não voar para baixo/cima
                     direction.y = 0;
                     // 3. Envia o pacote completo (Dano do Arquivo + Direção Calculada + Força do Arquivo)
-                    damageable.TakeDamage(ctx.CurrentAttack.Damage,direction,ctx.CurrentAttack.Knockback); // Aplica o dano
+                    damageable.TakeDamage(ctx.CurrentAttack.Damage,direction,ctx.CurrentAttack.Knockback,ctx.CurrentAttack.HitStunDuration); // Aplica o dano
                     _hitTargets.Add(damageable); // Adiciona na lista negra para não bater de novo
                 }
             }
