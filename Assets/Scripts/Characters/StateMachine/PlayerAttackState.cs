@@ -40,6 +40,12 @@ public class PlayerAttackState : PlayerBaseState
         
         //Trava o personagem
         ctx.PlayerVelocity = Vector3.zero;
+
+        if (ctx.CurrentAttack.SwingSound != null)
+        {
+            //Toca na posição do jogador
+            AudioManager.Instance.PlaySFX(ctx.CurrentAttack.SwingSound,ctx.transform.position);
+        }
         
         //Debug visual amarelo (preparando)
         if (ctx.PlayerRenderer != null) ctx.PlayerRenderer.material.color = Color.yellow;
@@ -198,6 +204,35 @@ public class PlayerAttackState : PlayerBaseState
                     direction.y = 0;
                     // 3. Envia o pacote completo (Dano do Arquivo + Direção Calculada + Força do Arquivo)
                     damageable.TakeDamage(ctx.CurrentAttack.Damage,direction,ctx.CurrentAttack.Knockback,ctx.CurrentAttack.HitStunDuration); // Aplica o dano
+
+                    if (ctx.CurrentAttack.ImpactSound != null)
+                    {
+                        // Toca exatamente onde o inimigo está (som 3D)
+                        AudioManager.Instance.PlaySFX(ctx.CurrentAttack.ImpactSound,enemy.transform.position);
+                    }
+                    
+                    //Impact VFX
+                    if (ctx.CurrentAttack.HitEffectPrefab != null)
+                    {
+                        // Perguntamos ao colisor do inimigo: "Qual seu ponto mais próximo do meu peito?"
+                        // Usamos (position + up) para pegar a altura do peito/ombro do atacante como referência.
+                        Vector3 attackerCenter = ctx.transform.position + Vector3.up;
+                        Vector3 exactHitPoint = enemy.ClosestPoint(attackerCenter);
+                        
+                        //CALCULAR A ROTAÇÃO (Para as faíscas voarem na direção certa)
+                        // A direção é do atacante PARA o ponto de contato.
+                        Vector3 impactDirection = (exactHitPoint - ctx.transform.position).normalized;
+                        Quaternion hitRotation = Quaternion.LookRotation(impactDirection);
+                        
+                        //Cria a particula
+                        GameObject vfx = Object.Instantiate(ctx.CurrentAttack.HitEffectPrefab, exactHitPoint, hitRotation);
+                        
+                        //Destroi após 1 seg
+                        Object.Destroy(vfx,1.0f);
+                        
+                    }
+                    
+                    
                     _hitTargets.Add(damageable); // Adiciona na lista negra para não bater de novo
                 }
             }

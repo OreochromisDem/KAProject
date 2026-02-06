@@ -22,4 +22,13 @@ public class AttackSO : ScriptableObject
     public float HitboxRadius = 0.5f; //Tamanhoo da esfera
     public Vector3 HitboxOffset = new Vector3(0,0,1f); //Distância do corpo (Z = frente)
 
+    [Header("Áudio")] 
+    public AudioConfigSO SwingSound;
+    public AudioConfigSO ImpactSound;
+    
+    [Header("Visuals")]
+    [Tooltip("Partícula que nasce quando acerta o inimigo")]
+    public GameObject HitEffectPrefab;
+    
+
 }

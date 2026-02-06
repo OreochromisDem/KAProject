@@ -802,6 +802,51 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &1585138339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1585138341}
+  - component: {fileID: 1585138340}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1585138340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585138339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ebdf271a86d8440940e301f391a5e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  _sfxObjectPrefab: {fileID: 3499151328332304351, guid: e49dba267495424428f605adb469a684, type: 3}
+--- !u!4 &1585138341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585138339}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.58666, y: 1, z: 4.938}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1734238158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -886,6 +931,22 @@ PrefabInstance:
       propertyPath: ShieldVisual
       value: 
       objectReference: {fileID: 2050614422}
+    - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
+      propertyPath: ComboChain.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
+      propertyPath: 'ComboChain.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: cb539471bbae9224f9a072f78fe8e81b, type: 2}
+    - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
+      propertyPath: 'ComboChain.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fbf4b54c9b19acd46a94f318e02c58e8, type: 2}
+    - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
+      propertyPath: 'ComboChain.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5baf96e94dec6e1469782207e7e2e74c, type: 2}
     - target: {fileID: 8240098720488924665, guid: c0e1c0e3cc3064c43955a40c1bcfd72b, type: 3}
       propertyPath: DashSpeedCurve.m_Curve.Array.size
       value: 2
@@ -1821,3 +1882,4 @@ SceneRoots:
   - {fileID: 2561919292985423097}
   - {fileID: 1734238158}
   - {fileID: 253504758}
+  - {fileID: 1585138341}

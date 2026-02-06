@@ -18,5 +18,9 @@ MonoBehaviour:
   RecoveryTime: 0.2
   Damage: 10
   Knockback: 3
+  HitStunDuration: 0.4
   HitboxRadius: 1.5
   HitboxOffset: {x: 0, y: 0, z: 0.8}
+  SwingSound: {fileID: 11400000, guid: 133ed0f900078584c9120c18e246e5c5, type: 2}
+  ImpactSound: {fileID: 11400000, guid: 5830a7a1e44268c4e82a543ba05f6b54, type: 2}
+  HitEffectPrefab: {fileID: 7736319653552064341, guid: 25de15bd9667e1f4187d4ec44401dedd, type: 3}
